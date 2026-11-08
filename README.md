@@ -10,7 +10,7 @@ Humanitarian Route Planner: Comparing Dijkstra and A* for Multimodal Aid Routing
 - GitHub — Version control and collaboration
 
 ## 2. Project Structure
-
+```
 Humanitarian Route Planner/
 ├── app.py
 ├── requirements.txt
@@ -25,7 +25,7 @@ Humanitarian Route Planner/
 └── interface/
     ├── map.py
     └── display.py
-
+```
 ## 3. Current Network
 
 The prototype currently contains:
