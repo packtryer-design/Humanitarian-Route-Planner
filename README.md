@@ -70,5 +70,3 @@ streamlit run app.py
 - Map lines are straight visual representations, not actual road or flight paths.
 - Provisional connections must be verified before final calculations.
 - All network information and estimates are for educational purposes only.
-
-**Repository:** [Humanitarian Route Planner](https://github.com/packtryer-design/Humanitarian-Route-Planner)
