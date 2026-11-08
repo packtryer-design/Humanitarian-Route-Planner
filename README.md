@@ -50,7 +50,7 @@ The project brief requires 23 nodes and 36 directed connections. Five nodes and 
 ### Algorithms and Scenarios
 The project structure includes files for Dijkstra, A*, and disruption scenarios. These still need to be completed and integrated with the interface.
 
-## 6. How to Run
+## 5. How to Run
 
 Install dependencies:
 
@@ -64,7 +64,7 @@ Run the application:
 streamlit run app.py
 ```
 
-## 7. Important Notes
+## 6. Important Notes
 
 - Connections represent directed routes.
 - Map lines are straight visual representations, not actual road or flight paths.
