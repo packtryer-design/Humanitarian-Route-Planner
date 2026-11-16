@@ -1,0 +1,19 @@
+node_id,node_name,latitude,longitude,category
+N01,Dubai Humanitarian Warehouse (IHC),25.0500,55.1400,Warehouse
+N02,Al Maktoum Airport (DWC),24.8960,55.1610,Airport
+N03,Dubai International Airport (DXB),25.2530,55.3650,Airport
+N04,Jebel Ali Port,24.9850,55.0270,Port
+N05,Jeddah,21.4858,39.1925,City
+N06,Port Sudan,19.6158,37.2164,Port
+N07,El Obeid,13.1842,30.2167,City
+N08,Djibouti,11.5886,43.1450,Port
+N09,Addis Ababa,8.9806,38.7578,City
+N10,Metema-Gallabat,12.9500,36.1500,Border Crossing
+N11,Cairo,30.0444,31.2357,City
+N12,Aswan,24.0889,32.8998,City
+N13,Argeen,22.0000,31.5000,Border Crossing
+N14,Atbara,17.7000,33.9800,City
+N15,Kassala,15.4500,36.4000,City
+N16,Gedaref,14.0300,35.3800,City
+N17,Omdurman,15.6500,32.4800,City
+N18,Kosti,13.1600,32.6600,City

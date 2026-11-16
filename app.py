@@ -1,4 +1,7 @@
 import streamlit as st
+import pandas as pd
+from interface.map import display_map
+from algorithms.dijkstra import HumanitarianNetwork
 # Page configuration
 st.set_page_config(
     page_title = "Dubai Humanitarian Route Planner",
@@ -29,10 +32,38 @@ cargo = st.sidebar.selectbox(
     "Cargo Type",
     ["Medical Supplies", "Cold Chain", "Bulk Food"]
 )
+cargo_weight = st.sidebar.number_input(
+    "Shipment weight (tons)",
+    min_value = 1.0,
+    max_value = 1000.0,
+    value = 10.0,
+    step = 1.0
+)
+risk_override = st.sidebar.checkbox(
+    "Allow high-risk routes (Risk 5)",
+    value = False
+)
+is_cold_chain = cargo == "Cold Chain"
 objective = st.sidebar.selectbox(
     "Optimization Objective",
     ["Fastest", "Cheapest", "Lowest Risk"]
 )
+objective_mapping = {
+    "Fastest" : "time",
+    "Cheapest" : "cost",
+    "Lowest Risk" : "risk"
+}
+selected_objective = objective_mapping[objective]
+destination_mapping = {
+    "El Obeid" : "N07",
+    "Port Sudan" : "N06"
+}
+selected_destination = destination_mapping[destination]
+
+# Create humanitarian network
+network = HumanitarianNetwork()
+nodes = pd.read_csv("data/nodes.csv")
+connections = pd.read_csv("data/connections.csv")
 scenario = st.sidebar.selectbox(
     "Disruption scenario",
     [
@@ -59,10 +90,7 @@ if st.sidebar.button("Calculate Route"):
 
 #Main page
 st.subheader("Transport Network")
-st.write(
-    "The interactive geographical map "
-    "will appear here."
-)
+display_map()
 st.warning(
     "Route calculation will be connected "
     "to the Dijkstra and A* algorithms later."
