@@ -1,0 +1,33 @@
+scenario_id,scenario_name,disruption_type,example_trigger,leg_id,action,value,expected_duration_days,typical_reroute
+S0,Baseline,,All legs open,,,,30,Reference case
+S1,Port Sudan airport closed,Airport closure,Drone strike / runway damage,L04,CLOSE,,14,Air via Jeddah then Red Sea ferry to Port Sudan port; or Egypt land corridor
+S1,Port Sudan airport closed,Airport closure,Drone strike / runway damage,L05,CLOSE,,14,Air via Jeddah then Red Sea ferry to Port Sudan port; or Egypt land corridor
+S1,Port Sudan airport closed,Airport closure,Drone strike / runway damage,L10,CLOSE,,14,Air via Jeddah then Red Sea ferry to Port Sudan port; or Egypt land corridor
+S1,Port Sudan airport closed,Airport closure,Drone strike / runway damage,L11,CLOSE,,14,Air via Jeddah then Red Sea ferry to Port Sudan port; or Egypt land corridor
+S1,Port Sudan airport closed,Airport closure,Drone strike / runway damage,L12,CLOSE,,14,Air via Jeddah then Red Sea ferry to Port Sudan port; or Egypt land corridor
+S1,Port Sudan airport closed,Airport closure,Drone strike / runway damage,L27,CLOSE,,14,Air via Jeddah then Red Sea ferry to Port Sudan port; or Egypt land corridor
+S2,Southern Red Sea transit suspended,Sea lane restriction,Attacks on shipping near Bab el-Mandeb,L14,CLOSE,,60,Sea to Djibouti then Ethiopia road; or air to Jeddah + short crossing
+S2,Southern Red Sea transit suspended,Sea lane restriction,Attacks on shipping near Bab el-Mandeb,L15,CLOSE,,60,Sea to Djibouti then Ethiopia road; or air to Jeddah + short crossing
+S2,Southern Red Sea transit suspended,Sea lane restriction,Attacks on shipping near Bab el-Mandeb,L18,CLOSE,,60,Sea to Djibouti then Ethiopia road; or air to Jeddah + short crossing
+S3,Metema-Gallabat crossing closed,Border closure,Fighting in border area,L22,CLOSE,,21,Shift to Port Sudan or Egypt corridors
+S4,Omdurman-El Obeid road blocked,Road blockage,Front line moves across Bara road,L34,CLOSE,,30,Reroute via Kosti
+S5,El Obeid airport closed,Airport closure,Shelling near airport,L09,CLOSE,,10,Road-only last mile via Kosti
+S5,El Obeid airport closed,Airport closure,Shelling near airport,L12,CLOSE,,10,Road-only last mile via Kosti
+S5,El Obeid airport closed,Airport closure,Shelling near airport,L36,CLOSE,,10,Road-only last mile via Kosti
+S6,Rainy season road degradation,Seasonal slowdown,"Jul-Sep rains, wadis flood",L22,TIME_MULT,1.6,75,"Same routes, longer times; prefer air where open"
+S6,Rainy season road degradation,Seasonal slowdown,"Jul-Sep rains, wadis flood",L25,TIME_MULT,1.6,75,"Same routes, longer times; prefer air where open"
+S6,Rainy season road degradation,Seasonal slowdown,"Jul-Sep rains, wadis flood",L26,TIME_MULT,1.6,75,"Same routes, longer times; prefer air where open"
+S6,Rainy season road degradation,Seasonal slowdown,"Jul-Sep rains, wadis flood",L28,TIME_MULT,1.6,75,"Same routes, longer times; prefer air where open"
+S6,Rainy season road degradation,Seasonal slowdown,"Jul-Sep rains, wadis flood",L29,TIME_MULT,1.6,75,"Same routes, longer times; prefer air where open"
+S6,Rainy season road degradation,Seasonal slowdown,"Jul-Sep rains, wadis flood",L30,TIME_MULT,1.6,75,"Same routes, longer times; prefer air where open"
+S6,Rainy season road degradation,Seasonal slowdown,"Jul-Sep rains, wadis flood",L31,TIME_MULT,1.6,75,"Same routes, longer times; prefer air where open"
+S6,Rainy season road degradation,Seasonal slowdown,"Jul-Sep rains, wadis flood",L32,TIME_MULT,1.6,75,"Same routes, longer times; prefer air where open"
+S6,Rainy season road degradation,Seasonal slowdown,"Jul-Sep rains, wadis flood",L33,TIME_MULT,1.6,75,"Same routes, longer times; prefer air where open"
+S6,Rainy season road degradation,Seasonal slowdown,"Jul-Sep rains, wadis flood",L34,TIME_MULT,1.6,75,"Same routes, longer times; prefer air where open"
+S6,Rainy season road degradation,Seasonal slowdown,"Jul-Sep rains, wadis flood",L35,TIME_MULT,1.6,75,"Same routes, longer times; prefer air where open"
+S7,Argeen crossing congestion,Border delay,Surge of refugees and cargo,L25,TIME_MULT,2.5,30,Egypt corridor deprioritised
+S8,Insurance spike on Red Sea,Cost shock,War-risk premiums triple,L14,COST_MULT,1.8,45,Cheapest route shifts to air/land
+S8,Insurance spike on Red Sea,Cost shock,War-risk premiums triple,L15,COST_MULT,1.8,45,Cheapest route shifts to air/land
+S8,Insurance spike on Red Sea,Cost shock,War-risk premiums triple,L18,COST_MULT,1.8,45,Cheapest route shifts to air/land
+S8,Insurance spike on Red Sea,Cost shock,War-risk premiums triple,L17,COST_MULT,1.8,45,Cheapest route shifts to air/land
+S9,Compound: S1 + S2,Compound,Airport and sea lane down together,,COMBINE,S1;S2,14,Stress test: only Ethiopia/Egypt land corridors remain

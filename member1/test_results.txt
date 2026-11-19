@@ -1,0 +1,22 @@
+test_bad_request (test_member1_data.DataTests.test_bad_request) ... ok
+test_capacity_filter (test_member1_data.DataTests.test_capacity_filter) ... ok
+test_closures (test_member1_data.DataTests.test_closures) ... ok
+test_combination_cycle (test_member1_data.DataTests.test_combination_cycle) ... ok
+test_compound_and_baseline_unchanged (test_member1_data.DataTests.test_compound_and_baseline_unchanged) ... ok
+test_direction_and_destination (test_member1_data.DataTests.test_direction_and_destination) ... ok
+test_duplicate_node (test_member1_data.DataTests.test_duplicate_node) ... ok
+test_inconsistent_coordinates (test_member1_data.DataTests.test_inconsistent_coordinates) ... ok
+test_invalid_p90 (test_member1_data.DataTests.test_invalid_p90) ... ok
+test_invalid_risk (test_member1_data.DataTests.test_invalid_risk) ... ok
+test_missing_time (test_member1_data.DataTests.test_missing_time) ... ok
+test_negative_cost (test_member1_data.DataTests.test_negative_cost) ... ok
+test_risk_override (test_member1_data.DataTests.test_risk_override) ... ok
+test_supplied_data (test_member1_data.DataTests.test_supplied_data) ... ok
+test_time_and_cost_multipliers (test_member1_data.DataTests.test_time_and_cost_multipliers) ... ok
+test_unknown_endpoint (test_member1_data.DataTests.test_unknown_endpoint) ... ok
+test_unknown_scenario_leg (test_member1_data.DataTests.test_unknown_scenario_leg) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.030s
+
+OK

@@ -1,0 +1,25 @@
+{
+  "locations": 23,
+  "directed_legs": 36,
+  "scenario_cases": 10,
+  "scenario_action_rows": 32,
+  "risk_5_legs": [
+    "L09",
+    "L12",
+    "L34"
+  ],
+  "status": "PASS",
+  "scope": "Structural and range validation; not operational verification",
+  "scenario_active_legs_1_tonne_no_risk5": {
+    "S0": 33,
+    "S1": 28,
+    "S2": 30,
+    "S3": 32,
+    "S4": 33,
+    "S5": 32,
+    "S6": 33,
+    "S7": 33,
+    "S8": 33,
+    "S9": 25
+  }
+}

@@ -1,0 +1,24 @@
+node_id,name,node_type,country,lat,lon,role,modes_served,legs_out,legs_in
+DWC,Al Maktoum Intl Airport,Airport,UAE,24.896,55.161,Transit / transfer,Air;Road (transfer),5,1
+DXB,Dubai Intl Airport,Airport,UAE,25.253,55.365,Transit / transfer,Air;Road (transfer),1,1
+IHC,Dubai humanitarian logistics hub (origin),Warehouse,UAE,24.985,55.09,Origin,Road (transfer),3,0
+JEA,Jebel Ali Port,Seaport,UAE,25.011,55.061,Transit / transfer,Road (transfer);Sea,3,1
+JED_AIR,Jeddah King Abdulaziz Airport,Airport,Saudi Arabia,21.68,39.157,Transit / transfer,Air;Road (transfer),2,1
+JED_PORT,Jeddah Islamic Port,Seaport,Saudi Arabia,21.48,39.17,Transit / transfer,Road (transfer);Sea,1,2
+DJI_AIR,Djibouti Ambouli Airport,Airport,Djibouti,11.547,43.159,Transit / transfer,Air;Road (transfer),1,1
+DJI_PORT,Djibouti Port (Doraleh),Seaport,Djibouti,11.6,43.09,Transit / transfer,Road;Road (transfer);Sea,3,1
+ADD,Addis Ababa Bole Airport / dry port,Hub,Ethiopia,8.978,38.799,Transit / transfer,Air;Road,1,2
+ASW,Aswan logistics hub,Hub,Egypt,24.089,32.899,Transit / transfer,Road,1,1
+CAI,Cairo Intl Airport,Airport,Egypt,30.122,31.406,Transit / transfer,Air;Road,1,1
+MET,Metema-Gallabat border crossing,Border crossing,Ethiopia/Sudan,12.96,36.15,Transit / transfer,Road,1,1
+ARG,Argeen border crossing,Border crossing,Egypt/Sudan,21.99,31.35,Transit / transfer,Road,1,1
+ATB,Atbara transfer point,Hub,Sudan,17.702,33.987,Transit / transfer,Road,1,1
+DGL,Dongola transfer point,Hub,Sudan,19.17,30.476,Transit / transfer,Road,1,1
+EBD,El Obeid Airport,Airport,Sudan,13.153,30.233,Transit / transfer,Air;Road (transfer),1,2
+ELO,El Obeid distribution hub (DESTINATION),Destination,Sudan,13.183,30.217,Destination,Road;Road (transfer),0,3
+GDF,Gedaref transfer point,Hub,Sudan,14.034,35.383,Alternative destination,Road,1,2
+KSL,Kassala transfer point,Hub,Sudan,15.451,36.4,Transit / transfer,Road,1,1
+KST,Kosti transfer point,Hub,Sudan,13.163,32.664,Alternative destination,Road,1,2
+OMD,Omdurman transfer point,Hub,Sudan,15.644,32.478,Transit / transfer,Road,2,2
+PSD_PORT,Port Sudan South Port + staging warehouse,Seaport,Sudan,19.59,37.22,Alternative destination,Road;Road (transfer);Sea,2,4
+PZU,Port Sudan New Intl Airport,Airport,Sudan,19.433,37.234,Transit / transfer,Air;Road (transfer),2,4

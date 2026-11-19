@@ -5,65 +5,35 @@ import streamlit as st
 from streamlit_folium import st_folium
 
 
-def display_map(highlighted_path=None):
+def display_map(locations, connections, highlighted_path=None):
 
     # Load location and connection data
-    nodes = pd.read_csv("data/nodes.csv")
-    all_connections = pd.read_csv("data/connections.csv")
+    nodes = locations.copy()
+    all_connections = connections.copy()
 
-    # Corridor selection
-    st.subheader("Select Humanitarian Corridor")
-    corridor = st.selectbox(
-        "Choose a corridor to display:",
-        [
-            "All Corridors",
-            "Direct Air",
-            "Saudi Corridor",
-            "Ethiopian Corridor",
-            "Egyptian Corridor"
-        ]
-    )
-
-    # Connection IDs belonging to each corridor
-    corridor_connections = {
-        "Direct Air": [
-            "C01", "C02", "C04", "C05", "C06", "C07",
-            "C18", "C19", "C20", "C21", "C22"
-        ],
-        "Saudi Corridor": [
-            "C01", "C02", "C08", "C09", "C10",
-            "C18", "C19", "C20", "C21", "C22",
-            "C25", "C26"
-        ],
-        "Ethiopian Corridor": [
-            "C03", "C11", "C12", "C13", "C23",
-            "C18", "C19", "C20", "C21", "C22"
-        ],
-        "Egyptian Corridor": [
-            "C01", "C02", "C14", "C15", "C16", "C17",
-            "C18", "C19", "C20", "C21", "C22", "C24"
-        ]
-    }
-
-    # Filter connections for the selected corridor
-    if corridor != "All Corridors":
-        selected_ids = corridor_connections[corridor]
-        connections = all_connections[
-            all_connections["connection_id"].isin(selected_ids)
-        ].copy()
-
-    else:
-        connections = all_connections.copy()
+    # Display all active connections
+    selected_connections = all_connections.copy()
+    connections = selected_connections
+    corridor = "All Corridors"
 
     # Corridor heading
     st.subheader(f"🌍 {corridor} Route Map")
     st.subheader("Corridor Overview")
 
     # Identify transport modes
-    modes = sorted(
-        connections["transport_mode"].dropna().unique()
-    )
-    mode_text = ", ".join(modes) if modes else "None"
+    modes = set(connections["mode"].dropna())
+    display_modes = set()
+    for mode in modes:
+        if "Air" in mode:
+            display_modes.add("Air")
+        elif "Sea" in mode:
+            display_modes.add("Sea")
+        elif "Road" in mode:
+            display_modes.add("Road")
+    mode_order = ["Air", "Road", "Sea"]
+    mode_text = ", ".join(
+        mode for mode in mode_order if mode in display_modes
+    ) if display_modes else "None"
 
     # Display summary metrics
     col1, col2, col3, col4 = st.columns(4)
@@ -85,7 +55,7 @@ def display_map(highlighted_path=None):
 
     # Location coordinates
     node_coordinates = {
-        row["node_id"]: [row["latitude"], row["longitude"]]
+        row["node_id"]: [row["lat"], row["lon"]]
         for _, row in nodes.iterrows()
     }
 
@@ -93,7 +63,8 @@ def display_map(highlighted_path=None):
     mode_colours = {
         "Air": "#8B78C6",
         "Sea": "#45A6A0",
-        "Road": "#D69A62"
+        "Road": "#D69A62",
+        "Road (transfer)": "#D69A62"
     }
 
     # Draw selected corridor connections
@@ -108,14 +79,14 @@ def display_map(highlighted_path=None):
                     node_coordinates[end]
                 ],
                 color=mode_colours.get(
-                    connection["transport_mode"],
+                    connection["mode"],
                     "gray"
                 ),
                 weight=2.5,
                 opacity=0.75,
                 tooltip=(
-                    f'{connection["connection_id"]}: '
-                    f'{connection["transport_mode"]}'
+                    f'{connection["leg_id"]}: '
+                    f'{connection["mode"]}'
                 )
             ).add_to(route_map)
 
@@ -137,7 +108,7 @@ def display_map(highlighted_path=None):
             if matching_connection.empty:
                 missing_segments.append(f"{start} → {end}")
                 continue
-            connection_id = matching_connection.iloc[0]["connection_id"]
+            leg_id = matching_connection.iloc[0]["leg_id"]
 
             # Draw highlighted route
             folium.PolyLine(
@@ -148,7 +119,7 @@ def display_map(highlighted_path=None):
                 color="#E63946",
                 weight=6,
                 opacity=1,
-                tooltip=f"Calculated Route: {connection_id}"
+                tooltip=f"Calculated Route: {leg_id}"
             ).add_to(route_map)
 
     if missing_segments:
@@ -167,22 +138,23 @@ def display_map(highlighted_path=None):
     for _, node in nodes.iterrows():
         folium.Marker(
             location=[
-                node["latitude"],
-                node["longitude"]
+                node["lat"],
+                node["lon"]
             ],
-            tooltip=node["node_name"],
+            tooltip=node["name"],
             popup=f"""
-                <b>{node['node_name']}</b><br>
-                Category: {node['category']}
+                <b>{node['name']}</b><br>
+                node_type: {node['node_type']}
             """,
             icon=folium.Icon(
                 color={
                     "Warehouse": "purple",
                     "Airport": "cadetblue",
-                    "Port": "green",
-                    "City": "orange",
-                    "Border Crossing": "red"
-                }.get(node["category"], "gray"),
+                    "Seaport": "green",
+                    "Destination": "orange",
+                    "Border crossing": "red",
+                    "Hub" : "darkpurple"
+                }.get(node["node_type"], "gray"),
                 icon="info-sign"
             )
         ).add_to(route_map)

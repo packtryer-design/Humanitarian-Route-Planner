@@ -2,3 +2,6 @@ venv/
 __pycache__/
 *.pyc
 .streamlit/secrets.toml
+.DS_Store
+Thumbs.db
+member1/Member1_Report.docx
