@@ -490,7 +490,8 @@ def summarise_scaling(rows):
 # Charts
 # ---------------------------------------------------------------------------
 
-BLUE, ORANGE, AQUA = '#2a78d6', '#eb6834', '#1baf7a'     # validated categorical slots 1-3
+C_DIJ, C_H0, C_AST = '#0D0D0D', '#8C8C8C', '#73030D'   # group palette: Dijkstra, A* h=0, A* straight-line
+C_MAIN = '#73030D'
 INK, INK2, MUTED, GRID = '#0b0b0b', '#52514e', '#898781', '#e1e0d9'
 
 
@@ -525,9 +526,9 @@ def make_charts(core, scaling_summary, heur, impact):
             and r['tonnes'] == 1 and not r['risk5_allowed']]
     x = list(range(len(rows)))
     w = 0.27
-    ax.bar([i - w for i in x], [r['dijkstra_expansions'] for r in rows], w, color=BLUE, label='Dijkstra (Person 2)')
-    ax.bar(x, [r['astar_h0_expansions'] for r in rows], w, color=AQUA, label='A* with h = 0')
-    ax.bar([i + w for i in x], [r['astar_expansions'] for r in rows], w, color=ORANGE, label='A* straight-line')
+    ax.bar([i - w for i in x], [r['dijkstra_expansions'] for r in rows], w, color=C_DIJ, label='Dijkstra (Person 2)')
+    ax.bar(x, [r['astar_h0_expansions'] for r in rows], w, color=C_H0, label='A* with h = 0')
+    ax.bar([i + w for i in x], [r['astar_expansions'] for r in rows], w, color=C_AST, label='A* straight-line')
     ax.set_xticks(x)
     ax.set_xticklabels([r['scenario'] for r in rows])
     _style(ax, 'Disruption scenario', 'Nodes expanded', 'Fastest route to El Obeid, 1 tonne: nodes expanded')
@@ -546,12 +547,12 @@ def make_charts(core, scaling_summary, heur, impact):
                 ('ms', 'Search time, ms (mean, error bars = 1 sd)', f'fig3_scaling_runtime_{obj}.png',
                  f'Search time vs network size ({obj} objective)')):
             fig, ax = plt.subplots(figsize=(7, 4), dpi=160, facecolor='white')
-            for label, key, colour, name in (('dijkstra', 'dijkstra', BLUE, 'Dijkstra (Person 2)'),
-                                             ('astar_h0', 'astar_h0', AQUA, 'A* with h = 0'),
-                                             ('astar', 'astar', ORANGE, 'A* straight-line')):
+            for label, key, colour, name, mk in (('dijkstra', 'dijkstra', C_DIJ, 'Dijkstra (Person 2)', 'o'),
+                                                 ('astar_h0', 'astar_h0', C_H0, 'A* with h = 0', 's'),
+                                                 ('astar', 'astar', C_AST, 'A* straight-line', '^')):
                 ys = [r[f'{key}_mean_{metric}'] for r in sub]
                 es = [r[f'{key}_sd_{metric}'] for r in sub]
-                ax.errorbar(ns, ys, yerr=es, color=colour, marker='o', markersize=5, linewidth=2,
+                ax.errorbar(ns, ys, yerr=es, color=colour, marker=mk, markersize=5, linewidth=2,
                             capsize=3, label=name)
             ax.set_xscale('log')
             ax.set_yscale('log')
@@ -567,7 +568,7 @@ def make_charts(core, scaling_summary, heur, impact):
     # 4. Heuristic study
     fig, ax = plt.subplots(figsize=(8, 4), dpi=160, facecolor='white')
     names = [r['method'] for r in heur]
-    ax.barh(range(len(heur)), [r['mean_expansions'] for r in heur], color=BLUE, height=0.55)
+    ax.barh(range(len(heur)), [r['mean_expansions'] for r in heur], color=C_MAIN, height=0.55)
     ax.set_yticks(range(len(heur)))
     ax.set_yticklabels(names)
     ax.invert_yaxis()
@@ -587,7 +588,7 @@ def make_charts(core, scaling_summary, heur, impact):
     fig, ax = plt.subplots(figsize=(8, 4), dpi=160, facecolor='white')
     xs = list(range(len(impact)))
     vals = [r['fastest_hours'] if r['fastest_hours'] is not None else 0 for r in impact]
-    ax.bar(xs, vals, 0.6, color=BLUE)
+    ax.bar(xs, vals, 0.6, color=C_MAIN)
     for i, r in enumerate(impact):
         ax.text(i, vals[i] + 1.5, f"{vals[i]:.0f}", ha='center', fontsize=8.5, color=INK2)
     ax.set_xticks(xs)
