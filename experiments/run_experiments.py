@@ -3,7 +3,8 @@
 Educational purposes only. All network data is hypothetical.
 
 Compares the group's own implementations, unmodified:
-    Dijkstra  = algorithms/dijkstra.py  (Person 2)
+    Dijkstra  = algorithms/dijkstra.py  (Person 2; both the original add_leg
+                interface and the newer workbook-reading interface are supported)
     A*        = algorithms/astar.py     (Person 3), straight-line heuristic
     A* (h=0)  = the same A* code with a zero heuristic, i.e. Dijkstra with a
                 closed set, used as a like-for-like baseline
@@ -49,6 +50,7 @@ SCENARIO_NAMES = {
 }
 SHIPMENTS = (1, 10, 100)          # tonnes
 TOL = 1e-6
+DIJ_TOL = 0.011               # the newer Dijkstra rounds totals to 2 decimals
 
 
 # ---------------------------------------------------------------------------
@@ -76,8 +78,18 @@ class _CountingHeap:
         return item
 
 
+NEW_DIJKSTRA = not hasattr(HumanitarianNetwork, 'add_leg')
+_NEW_NET = []
+
+
 def build_network(edges):
-    """Person 2's graph class, filled the same way app.py fills it."""
+    """Person 2's graph class. The original class is filled leg by leg (as app.py
+    did). The newer class reads the workbook itself and applies scenarios inside
+    dijkstra(), so one instance serves every scenario."""
+    if NEW_DIJKSTRA:
+        if not _NEW_NET:
+            _NEW_NET.append(HumanitarianNetwork(str(DEFAULT_WORKBOOK)))
+        return _NEW_NET[0]
     net = HumanitarianNetwork()
     for e in edges:
         net.add_leg(e['from_node'], e['to_node'], e['transit_hours_typical'],
@@ -85,24 +97,40 @@ def build_network(edges):
     return net
 
 
-def run_dijkstra(net, start, goal, objective, tonnes, risk5, cold=False):
+def run_dijkstra(net, start, goal, objective, tonnes, risk5, cold=False, sid='S0'):
+    if NEW_DIJKSTRA:
+        return net.dijkstra(start, goal, objective, cargo_weight=tonnes, is_cold_chain=cold,
+                            risk_override=risk5, scenario_id=sid)
     return net.dijkstra(start, goal, objective, cargo_weight=tonnes,
                         is_cold_chain=cold, risk_override=risk5)
 
 
-def count_dijkstra(net, start, goal, objective, tonnes, risk5, cold=False):
+def count_dijkstra(net, start, goal, objective, tonnes, risk5, cold=False, sid='S0'):
     real = dijkstra_module.heapq
     heap = _CountingHeap()
     dijkstra_module.heapq = heap
     try:
-        result = run_dijkstra(net, start, goal, objective, tonnes, risk5, cold)
+        result = run_dijkstra(net, start, goal, objective, tonnes, risk5, cold, sid)
     finally:
         dijkstra_module.heapq = real
     return result, heap
 
 
+def dijkstra_expansions(heap):
+    """Nodes expanded. The newer Dijkstra skips a popped node it has already
+    settled, so expansions are the distinct popped nodes; the original has no
+    closed set, so every pop counts."""
+    return len(set(heap.popped)) if NEW_DIJKSTRA else heap.pops
+
+
 def dijkstra_cost(result, objective):
-    return result[f'total_{objective}'] if result['path'] else None
+    if not result['path']:
+        return None
+    return result['total_objective_val'] if NEW_DIJKSTRA else result[f'total_{objective}']
+
+
+def dijkstra_hours(result):
+    return result.get('total_time_hours') if NEW_DIJKSTRA else result.get('total_time')
 
 
 def median_ms(fn, repeats):
@@ -117,7 +145,7 @@ def median_ms(fn, repeats):
 def same_cost(found_a, cost_a, found_b, cost_b):
     if found_a != found_b:
         return False
-    return (not found_a) or abs(cost_a - cost_b) <= TOL
+    return (not found_a) or abs(cost_a - cost_b) <= (DIJ_TOL if NEW_DIJKSTRA else TOL)
 
 
 def mean_sd(values):
@@ -156,7 +184,7 @@ def core_grid(data, repeats):
         graph = adjacency(data, edges)
         net = build_network(edges)
         for dest, obj in itertools.product(dests, ('time', 'cost')):
-            d_res, heap = count_dijkstra(net, ORIGIN, dest, obj, tonnes, risk5)
+            d_res, heap = count_dijkstra(net, ORIGIN, dest, obj, tonnes, risk5, False, sid)
             a = astar(graph, coords, ORIGIN, dest, obj)
             z = astar(graph, coords, ORIGIN, dest, obj, heuristic='zero')
             d_found = d_res['path'] is not None
@@ -170,11 +198,12 @@ def core_grid(data, repeats):
                 'agree_dijkstra_astar': same_cost(d_found, d_cost, a.found, a.cost),
                 'agree_astar_h0': same_cost(z.found, z.cost, a.found, a.cost),
                 'same_route': d_res['path'] == a.path if d_found and a.found else (not d_found and not a.found),
-                'dijkstra_expansions': heap.pops, 'dijkstra_unique_nodes': len(set(heap.popped)),
+                'dijkstra_expansions': dijkstra_expansions(heap), 'dijkstra_unique_nodes': len(set(heap.popped)),
+                'dijkstra_pops': heap.pops,
                 'dijkstra_pushes': heap.pushes,
                 'astar_expansions': a.nodes_expanded, 'astar_generated': a.labels_generated,
                 'astar_h0_expansions': z.nodes_expanded, 'astar_h0_generated': z.labels_generated,
-                'dijkstra_ms': median_ms(lambda: run_dijkstra(net, ORIGIN, dest, obj, tonnes, risk5), repeats),
+                'dijkstra_ms': median_ms(lambda: run_dijkstra(net, ORIGIN, dest, obj, tonnes, risk5, False, sid), repeats),
                 'astar_ms': median_ms(lambda: astar(graph, coords, ORIGIN, dest, obj), repeats),
                 'astar_h0_ms': median_ms(lambda: astar(graph, coords, ORIGIN, dest, obj, heuristic='zero'), repeats),
             })
@@ -194,14 +223,14 @@ def cold_chain_grid(data):
         edges = prepare_edges(data, sid, tonnes, risk5)
         graph = adjacency(data, edges)
         net = build_network(edges)
-        d_res = run_dijkstra(net, ORIGIN, dest, obj, tonnes, risk5, cold=True)
+        d_res = run_dijkstra(net, ORIGIN, dest, obj, tonnes, risk5, True, sid)
         a = astar(graph, coords, ORIGIN, dest, obj, max_hours=72)
         d_found = d_res['path'] is not None
         rows.append({
             'scenario': sid, 'tonnes': tonnes, 'risk5_allowed': risk5, 'destination': dest,
             'objective': obj, 'dijkstra_found': d_found, 'astar_found': a.found,
             'dijkstra_cost': dijkstra_cost(d_res, obj), 'astar_cost': a.cost if a.found else None,
-            'dijkstra_hours': d_res.get('total_time') if d_found else None,
+            'dijkstra_hours': dijkstra_hours(d_res) if d_found else None,
             'astar_hours': round(a.total_hours, 3) if a.found else None,
             'agree': same_cost(d_found, dijkstra_cost(d_res, obj), a.found, a.cost),
         })
@@ -212,6 +241,9 @@ def cold_chain_grid(data):
 # Experiment 3: the "lowest risk" objective is defined differently
 # ---------------------------------------------------------------------------
 
+RISK_OBJECTIVE = 'risk_weighted_cost' if NEW_DIJKSTRA else 'risk'   # the newer Dijkstra has no plain 'risk' objective
+
+
 def risk_comparison(data):
     coords = node_coordinates(data)
     rows = []
@@ -219,7 +251,7 @@ def risk_comparison(data):
         edges = prepare_edges(data, sid, 1, False)
         graph = adjacency(data, edges)
         net = build_network(edges)
-        d_res = run_dijkstra(net, ORIGIN, 'ELO', 'risk', 1, False)
+        d_res = run_dijkstra(net, ORIGIN, 'ELO', RISK_OBJECTIVE, 1, False, False, sid)
         a = lowest_risk_route(graph, coords, ORIGIN, 'ELO', 'time')
         row = {'scenario': sid}
         if d_res['path']:
@@ -396,6 +428,20 @@ def synthetic_graph(n, seed, k=3):
 
 
 def synthetic_network(graph):
+    if NEW_DIJKSTRA:
+        # The newer class reads a workbook in __init__, so build the instance
+        # without it and fill its graph directly (same fields as _build_graph).
+        import pandas as pd
+        net = HumanitarianNetwork.__new__(HumanitarianNetwork)
+        net.scenarios_df = pd.DataFrame(columns=['scenario_id', 'action', 'leg_id', 'value'])
+        net.graph = {}
+        for es in graph.values():
+            for e in es:
+                net.graph.setdefault(e['from_node'], {})[e['to_node']] = {
+                    'leg_id': e['leg_id'], 'time': e['transit_hours_typical'],
+                    'cost': e['cost_usd_per_tonne'], 'risk': e['risk_score_1to5'],
+                    'capacity': e['capacity_tonnes_per_week'], 'mode': e['mode'], 'corridor': 'synthetic'}
+        return net
     net = HumanitarianNetwork()
     for es in graph.values():
         for e in es:
@@ -422,7 +468,7 @@ def scaling_study(sizes, graphs_per_size, queries_per_graph, repeats):
                     rows.append({
                         'nodes': n, 'graph_seed': g, 'objective': obj, 'start': start, 'goal': goal,
                         'agree': same_cost(d_res['path'] is not None, d_cost, a.found, a.cost),
-                        'dijkstra_expansions': heap.pops, 'astar_expansions': a.nodes_expanded,
+                        'dijkstra_expansions': dijkstra_expansions(heap), 'astar_expansions': a.nodes_expanded,
                         'astar_h0_expansions': z.nodes_expanded,
                         'dijkstra_ms': median_ms(lambda: run_dijkstra(net, start, goal, obj, 1, False), repeats),
                         'astar_ms': median_ms(lambda: astar(graph, coords, start, goal, obj), repeats),

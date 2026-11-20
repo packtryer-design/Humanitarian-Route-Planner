@@ -35,7 +35,7 @@ class Agreement(unittest.TestCase):
 
     def test_impossible_capacity(self):
         edges, graph, net = self.setup('S0', tonnes=1e7)
-        d = run_dijkstra(net, ORIGIN, 'ELO', 'time', 1e7, False)
+        d = run_dijkstra(net, ORIGIN, 'ELO', 'time', 1e7, False, False, 'S0')
         a = astar(graph, self.coords, ORIGIN, 'ELO', 'time')
         self.assertIsNone(d['path'])
         self.assertFalse(a.found)

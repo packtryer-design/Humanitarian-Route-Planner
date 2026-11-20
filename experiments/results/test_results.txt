@@ -7,6 +7,6 @@ test_synthetic_agreement (__main__.Agreement.test_synthetic_agreement) ... ok
 test_weighted_astar_never_cheaper_than_optimal (__main__.Agreement.test_weighted_astar_never_cheaper_than_optimal) ... ok
 
 ----------------------------------------------------------------------
-Ran 7 tests in 0.539s
+Ran 7 tests in 1.660s
 
 OK
