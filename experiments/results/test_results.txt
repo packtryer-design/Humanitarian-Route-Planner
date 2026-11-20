@@ -1,0 +1,12 @@
+test_closed_legs_not_used (__main__.Agreement.test_closed_legs_not_used) ... ok
+test_cold_chain_agreement (__main__.Agreement.test_cold_chain_agreement) ... ok
+test_heuristic_admissible_and_consistent (__main__.Agreement.test_heuristic_admissible_and_consistent) ... ok
+test_impossible_capacity (__main__.Agreement.test_impossible_capacity) ... ok
+test_same_optimal_cost_everywhere (__main__.Agreement.test_same_optimal_cost_everywhere) ... ok
+test_synthetic_agreement (__main__.Agreement.test_synthetic_agreement) ... ok
+test_weighted_astar_never_cheaper_than_optimal (__main__.Agreement.test_weighted_astar_never_cheaper_than_optimal) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.539s
+
+OK
