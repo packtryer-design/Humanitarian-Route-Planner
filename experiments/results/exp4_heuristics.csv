@@ -1,0 +1,6 @@
+method,queries,mean_expansions,sd_expansions,mean_cost_ratio,worst_cost_ratio
+Dijkstra-equivalent (h=0),80,13.9,3.62,1.0,1.0
+A* straight-line (e=1.0),80,13.24,4.3,1.0,1.0
+Weighted A* (e=1.5),80,13.04,4.64,1.0,1.0
+Weighted A* (e=2),80,12.89,4.82,1.0,1.0
+Weighted A* (e=3),80,11.6,4.92,1.0,1.0

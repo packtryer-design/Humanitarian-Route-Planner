@@ -1,0 +1,11 @@
+scenario,name,fastest_route,fastest_hours,fastest_usd_per_t,fastest_changed,fastest_delta_hours,fastest_delta_usd,cheapest_route,cheapest_hours,cheapest_usd_per_t,cheapest_changed,cheapest_delta_hours,cheapest_delta_usd
+S0,Baseline,IHC > DWC > PZU > PSD_PORT > ATB > OMD > KST > ELO,77.9,2664,False,0.0,0,IHC > JEA > PSD_PORT > ATB > OMD > KST > ELO,287.9,816,False,0.0,0
+S1,Port Sudan airport closed,IHC > DWC > ADD > MET > GDF > KST > ELO,100.2,3222,True,22.3,558,IHC > JEA > PSD_PORT > ATB > OMD > KST > ELO,287.9,816,False,0.0,0
+S2,Red Sea transit suspended,IHC > DWC > PZU > PSD_PORT > ATB > OMD > KST > ELO,77.9,2664,False,0.0,0,IHC > JEA > DJI_PORT > ADD > MET > GDF > KST > ELO,298.0,874,True,10.1,58
+S3,Metema crossing closed,IHC > DWC > PZU > PSD_PORT > ATB > OMD > KST > ELO,77.9,2664,False,0.0,0,IHC > JEA > PSD_PORT > ATB > OMD > KST > ELO,287.9,816,False,0.0,0
+S4,Omdurman road blocked,IHC > DWC > PZU > PSD_PORT > ATB > OMD > KST > ELO,77.9,2664,False,0.0,0,IHC > JEA > PSD_PORT > ATB > OMD > KST > ELO,287.9,816,False,0.0,0
+S5,El Obeid airport closed,IHC > DWC > PZU > PSD_PORT > ATB > OMD > KST > ELO,77.9,2664,False,0.0,0,IHC > JEA > PSD_PORT > ATB > OMD > KST > ELO,287.9,816,False,0.0,0
+S6,Rainy season,IHC > DWC > PZU > PSD_PORT > ATB > OMD > KST > ELO,112.6,2664,False,34.7,0,IHC > JEA > PSD_PORT > ATB > OMD > KST > ELO,322.6,816,False,34.7,0
+S7,Argeen congestion,IHC > DWC > PZU > PSD_PORT > ATB > OMD > KST > ELO,77.9,2664,False,0.0,0,IHC > JEA > PSD_PORT > ATB > OMD > KST > ELO,287.9,816,False,0.0,0
+S8,Insurance spike,IHC > DWC > PZU > PSD_PORT > ATB > OMD > KST > ELO,77.9,2664,False,0.0,0,IHC > JEA > DJI_PORT > ADD > MET > GDF > KST > ELO,298.0,874,True,10.1,58
+S9,Compound disruption,IHC > DWC > ADD > MET > GDF > KST > ELO,100.2,3222,True,22.3,558,IHC > JEA > DJI_PORT > ADD > MET > GDF > KST > ELO,298.0,874,True,10.1,58
